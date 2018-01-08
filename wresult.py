@@ -240,56 +240,7 @@ def main(_):
           wav_data_placeholder: file})  # when test the accuracy, using logits, not softmax in train.py, to conduct tf.argmax, and then get the confusion matrix
       predicted_indices = np.argmax(result)
       randwriter.writerow([filename] + [lableList[predicted_indices]])
-        # f = open(file, 'r')
-        # f.readlines()
-        # f.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
-  if not os.path.exists(FLAGS.result_dir):
-      os.makedirs(FLAGS.result_dir)
-
-  lableList=FLAGS.wanted_words.split(',')
-  lableList.append('unknown')
-  lableList.append('silence')
-  with open(FLAGS.result_dir+'/sample_submission.csv', 'w') as csvfile: # python input and output  Reading and Writing Files  2.7 , newline='' can not be used
-    # 'w' for only writing (an existing file with the same name will be erased), and 'a' opens the file for appending;
-    spamwriter = csv.writer(csvfile, delimiter=',') # quotechar='', quoting=csv.QUOTE_MINIMAL quotechar must be set if quoting enabled
-    spamwriter.writerow(['fname'] + ['label'])
-    for i in range(1,100):
-      ilabel=random.randint(0,11)
-      spamwriter.writerow(['File'+str(i)]  + [lableList[ilabel]])
-  #  No such file or directory: '/home/tonzheng/ytest/result_submission.csv'   --solve:   if not os.path.exists(FLAGS.result_dir): os.makedirs(FLAGS.result_dir)
-
-  '''
-
-
-
+  
 
 
 if __name__ == '__main__':
@@ -325,6 +276,20 @@ if __name__ == '__main__':
       type=int,
       default=40,
       help='How many bins to use for the MFCC fingerprint', )
+
+
+  parser.add_argument(
+      '--wanted_words',
+      type=str,
+      default='yes,no,up,down,left,right,on,off,stop,go',
+      help='Words to use (others will be added to an unknown label)', )
+
+  parser.add_argument(
+      '--model_architecture',
+      type=str,
+      default='conv',
+      help='What model architecture to use')  
+  
   parser.add_argument(
       '--start_checkpoint',
       type=str,
@@ -332,17 +297,7 @@ if __name__ == '__main__':
       #default='/home/tonzheng/ztSpeechtrainResult/speech_commands_train/conv.ckpt-18000',
       #'/home/tonzheng/S/conv.ckpt-18000' default='/home/tonzheng/ztSpeechtrainResult/speech_commands_train/conv.ckpt-18000',#default='/home/tonzheng/ztSpeechtrainResult/speech_commands_train', # reuse the check point
       help='If specified, restore this pretrained model before any training.')
-  parser.add_argument(
-      '--model_architecture',
-      type=str,
-      default='conv',
-      help='What model architecture to use')
-  parser.add_argument(
-      '--wanted_words',
-      type=str,
-      default='yes,no,up,down,left,right,on,off,stop,go',
-      help='Words to use (others will be added to an unknown label)', )
-
+  
   parser.add_argument(
       '--result_dir',
       type=str,
